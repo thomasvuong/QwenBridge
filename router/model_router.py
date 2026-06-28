@@ -89,15 +89,53 @@ def route(task: dict) -> RoutingDecision:
                            *_COST[config.MODEL_PLUS])
 
 
+def _mock_call(messages: list[dict], decision: RoutingDecision, **kwargs) -> tuple[str, ModelUsage]:
+    """Return a realistic fake response — used when MOCK_MODE=true."""
+    import json as _json
+    user_content = next(
+        (m["content"] for m in reversed(messages) if m.get("role") == "user"), ""
+    )
+    # If caller wants JSON, return a valid stub
+    if kwargs.get("response_format", {}).get("type") == "json_object":
+        stub = _json.dumps({
+            "subtasks": [
+                {"agent": "tool_agent",    "task": f"[MOCK] {user_content[:60]}", "priority": 1},
+                {"agent": "memory_agent",  "task": "Store task context",          "priority": 2},
+            ],
+            "requires_simulation": True,
+            "complexity": "medium",
+            "reasoning": "[MOCK] Simulated orchestration plan",
+        })
+    else:
+        stub = (
+            f"[MOCK — {decision.model}] "
+            f"This is a simulated response to: \"{user_content[:80]}\". "
+            "In production this calls the real Qwen API via DashScope. "
+            "The routing logic, AgentWorld simulation, and memory layer are all live."
+        )
+    latency = 42.0
+    usage = _session_usage.setdefault(decision.model, ModelUsage(decision.model))
+    usage.input_tokens  += 120
+    usage.output_tokens += 80
+    usage.latency_ms    += latency
+    usage.calls         += 1
+    console.print(f"[dim magenta]🔷 MOCK {decision.model} | 120in/80out | {latency:.0f}ms[/dim magenta]")
+    return stub, usage
+
+
 def call(messages: list[dict], task: dict | None = None,
          model: str | None = None, **kwargs) -> tuple[str, ModelUsage]:
     """
     Route and call DashScope. Returns (reply_text, usage).
     Falls back: max → plus → turbo on rate-limit.
+    When MOCK_MODE=true, returns a realistic stub without any API call.
     """
     task = task or {}
     decision = route(task) if model is None else RoutingDecision(
         model, "medium", "explicit override", *_COST.get(model, (0, 0)))
+
+    if config.MOCK_MODE:
+        return _mock_call(messages, decision, **kwargs)
 
     client = OpenAI(api_key=config.DASHSCOPE_API_KEY, base_url=config.DASHSCOPE_BASE_URL)
     fallback_chain = [decision.model, config.MODEL_PLUS, config.MODEL_TURBO]

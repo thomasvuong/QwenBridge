@@ -27,6 +27,10 @@ class MemoryAgent:
         self._init_tablestore()
 
     def _init_tablestore(self):
+        if config.MOCK_MODE:
+            self._use_local = True
+            console.print("[dim magenta]🔷 MOCK MemoryAgent: using local JSON store[/dim magenta]")
+            return
         try:
             import tablestore as ts
             self._ts_client = ts.OTSClient(

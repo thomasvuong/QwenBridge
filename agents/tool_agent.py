@@ -42,6 +42,9 @@ class ToolAgent:
         self._init_oss()
 
     def _init_oss(self):
+        if config.MOCK_MODE:
+            console.print("[dim magenta]🔷 MOCK ToolAgent: OSS disabled[/dim magenta]")
+            return
         try:
             import oss2
             auth = oss2.Auth(config.ALI_ACCESS_KEY_ID, config.ALI_ACCESS_KEY_SECRET)
