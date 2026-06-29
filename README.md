@@ -6,6 +6,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![Deployed on Alibaba Cloud](https://img.shields.io/badge/Deployed-Alibaba%20Cloud-orange.svg)]()
+[![CI](https://github.com/thomasvuong/QwenBridge/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvuong/QwenBridge/actions/workflows/ci.yml)
 
 ---
 

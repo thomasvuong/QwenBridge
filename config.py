@@ -11,7 +11,7 @@ MOCK_MODE = os.getenv("MOCK_MODE", "true").lower() in ("true", "1", "yes")
 # ── DashScope ─────────────────────────────────────────────────────────────────
 DASHSCOPE_API_KEY  = os.getenv("DASHSCOPE_API_KEY", "sk-mock-key-placeholder")
 DASHSCOPE_BASE_URL = os.getenv("DASHSCOPE_BASE_URL",
-                               "https://dashscope.aliyuncs.com/compatible-mode/v1")
+                               "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
 
 # ── Alibaba Cloud ─────────────────────────────────────────────────────────────
 ALI_ACCESS_KEY_ID     = os.getenv("ALIBABA_ACCESS_KEY_ID",     "mock-id")
