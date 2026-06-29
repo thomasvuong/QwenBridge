@@ -53,8 +53,7 @@ class MemoryAgent:
         except Exception:
             schema = ts.TableMeta(
                 "agent_memory",
-                [ts.PrimaryKeyColumn("session_id", ts.PrimaryKeyType.STRING),
-                 ts.PrimaryKeyColumn("timestamp",  ts.PrimaryKeyType.INTEGER)],
+                [("session_id", "STRING"), ("timestamp", "INTEGER")],
             )
             capacity = ts.ReservedThroughput(ts.CapacityUnit(0, 0))
             options  = ts.TableOptions(time_to_live=-1, max_version=1)
