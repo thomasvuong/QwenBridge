@@ -16,9 +16,10 @@ DASHSCOPE_BASE_URL = os.getenv("DASHSCOPE_BASE_URL",
 # ── Alibaba Cloud ─────────────────────────────────────────────────────────────
 ALI_ACCESS_KEY_ID     = os.getenv("ALIBABA_ACCESS_KEY_ID",     "mock-id")
 ALI_ACCESS_KEY_SECRET = os.getenv("ALIBABA_ACCESS_KEY_SECRET", "mock-secret")
-ALI_REGION            = os.getenv("ALIBABA_REGION", "ap-southeast-1")
+ALI_REGION            = os.getenv("ALIBABA_REGION", "cn-hangzhou")
+OSS_REGION            = os.getenv("ALIBABA_OSS_REGION", "ap-southeast-1")
 OSS_BUCKET            = os.getenv("ALIBABA_OSS_BUCKET", "qwenbridge-storage")
-OSS_ENDPOINT          = f"https://oss-{ALI_REGION}.aliyuncs.com"
+OSS_ENDPOINT          = f"https://oss-{OSS_REGION}.aliyuncs.com"
 TABLESTORE_INSTANCE   = os.getenv("ALIBABA_TABLESTORE_INSTANCE", "qwenbridge-memory")
 TABLESTORE_ENDPOINT   = os.getenv("ALIBABA_TABLESTORE_ENDPOINT",
                                    "https://qwenbridge-memory.ap-southeast-1.ots.aliyuncs.com")

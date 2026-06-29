@@ -55,9 +55,9 @@ class MemoryAgent:
                 "agent_memory",
                 [("session_id", "STRING"), ("timestamp", "INTEGER")],
             )
-            capacity = ts.ReservedThroughput(ts.CapacityUnit(0, 0))
             options  = ts.TableOptions(time_to_live=-1, max_version=1)
-            self._ts_client.create_table(schema, capacity, options)
+            capacity = ts.ReservedThroughput(ts.CapacityUnit(0, 0))
+            self._ts_client.create_table(schema, options, capacity)
             console.print("[green]✓ Created Table Store table: agent_memory[/green]")
 
     # ── Public API ────────────────────────────────────────────────────────────
