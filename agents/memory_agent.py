@@ -123,15 +123,15 @@ class MemoryAgent:
 
     def _ts_query(self, session_id: str, limit: int) -> list[dict]:
         import tablestore as ts
-        start = [("session_id", session_id), ("timestamp", ts.INF_MIN)]
-        end   = [("session_id", session_id), ("timestamp", ts.INF_MAX)]
-        criteria = ts.RangeRowQueryCriteria(
-            "agent_memory", start, end,
-            max_version=1, limit=limit,
-            direction=ts.Direction.BACKWARD,
-        )
-        _, rows, _ = self._ts_client.get_range(
-            "agent_memory", criteria, ts.Direction.BACKWARD
+        start = [("session_id", session_id), ("timestamp", ts.INF_MAX)]
+        end   = [("session_id", session_id), ("timestamp", ts.INF_MIN)]
+        _, _, rows, _ = self._ts_client.get_range(
+            "agent_memory",
+            "BACKWARD",
+            start,
+            end,
+            limit=limit,
+            max_version=1,
         )
         result = []
         for row in rows:
